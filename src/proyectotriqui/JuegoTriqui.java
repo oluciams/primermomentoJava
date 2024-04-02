@@ -4,37 +4,49 @@ import java.util.Scanner;
 
 public class JuegoTriqui {
 
+    static Scanner sc = new Scanner(System.in);
     static char[][] recuadro = new char[3][3];
     static char jugador = 'X';
 
     public static void main(String[] args) {
+        iniciarJuego();
+    }
 
-        Scanner sc = new Scanner(System.in);
+    public static void iniciarJuego () {
         inicializarRecuadro();
         boolean hayGanador = false;
 
-        System.out.println("Bienvenido vamos a juagar Triqui");
-        System.out.println("Con el simbolo de la 'X' es el Jugador 1: X");
-        System.out.println("Con el simbolo de la 'O' es el Jugador 2: O");
+        System.out.println("\n==== Bienvenido, vamos a juagar Triqui ====");
+        System.out.println("La letra 'X' es para el Jugador 1: X");
+        System.out.println("La letra 'O' es para el Jugador 2: O");
 
         while (!hayGanador) {
-            System.out.println("\nTurno del jugador " + jugador);
-            System.out.println("Por favor ingresa la fila y columna para realizar tu movimiento (ejemplo: 0 0):");
-            int fila = sc.nextInt();
-            int columna = sc.nextInt();
+            try {
+                System.out.println("\nTurno del jugador " + jugador);
+                System.out.println("Por favor ingresa la fila (del 0 al 2) y columna (del 0 al 2) para realizar tu movimiento (ejemplo: 0 0):");
+                int fila = sc.nextInt();
+                int columna = sc.nextInt();
 
-            movimiento(fila, columna);
-            imprimirRecuadro();
+                realizarMovimiento(fila, columna);
+                imprimirRecuadro();
 
-            if (verificarGanador()) {
-                hayGanador = true;
-                jugador = (jugador == 'X') ? 'O' : 'X';
-                System.out.println("¡El jugador " + jugador + " ha ganado!");
+                if (verificarGanador()) {
+                    hayGanador = true;
+                    jugador = (jugador == 'X') ? 'O' : 'X';
+                    System.out.println("¡El jugador " + jugador + " ha ganado!");
+                }
+
+            } catch (Exception e) {
+                System.out.println("Solo se permiten números");
+                System.out.println(e);
+                sc.nextLine();
             }
+
         }
+
     }
 
-    static void inicializarRecuadro() {
+    public static void inicializarRecuadro() {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 recuadro[i][j] = '-';
@@ -42,7 +54,7 @@ public class JuegoTriqui {
         }
     }
 
-    static void imprimirRecuadro() {
+    public static void imprimirRecuadro() {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 System.out.print(recuadro[i][j] + " ");
@@ -51,7 +63,7 @@ public class JuegoTriqui {
         }
     }
 
-    static void movimiento(int fila, int columna) {
+    public static void realizarMovimiento(int fila, int columna) {
         if (fila >= 0 && fila < 3 && columna >= 0 && columna < 3 && recuadro[fila][columna] == '-') {
             recuadro[fila][columna] = jugador;
             if(jugador == 'X'){
@@ -73,6 +85,7 @@ public class JuegoTriqui {
                 return true;
             }
         }
+
         if (recuadro[0][0] != '-' && recuadro[0][0] == recuadro[1][1] && recuadro[0][0] == recuadro[2][2]) {
             return true;
         }
